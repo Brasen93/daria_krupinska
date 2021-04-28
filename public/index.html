@@ -1,111 +1,83 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8">
   <title>Feedmail</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
-  integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+  <meta name="author" content="Finibit">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
-
-<body>
-
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-
-      <!--LOGO-->
-      <a class="navbar-brand" href="">
-      <img src="/images/logo.png" width="35" height="35" alt="rssLogo">
-        RSS Feedmail
-      </a>
-
-
-
-      <!-- Przycisk -->
-
-      <div>
-        <button class="btn btn-sm btn-outline-secondary" type="submit" id="savebtn" onclick="saveChanges()">Save</button>
-        <button class="btn btn-sm btn-outline-secondary" type="button" id="preview_btn" onclick="getPreview()">Preview</button>
-        <button class="btn btn-outline-success me-2" type="button" onclick="sendMail()" id="send_btn">Send</button>
-
+<body style="padding-top: 80px">
+  <header>
+    <nav class="navbar navbar-expand-md fixed-top" style="background-color: white; border-top: 4px solid #3e4551; box-shadow: 0px 10px 18px -8px rgba(0,0,0,0.28);">
+      <i class="fa fa-rss-square fa-3x" aria-hidden="true"></i>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link text-reset" href="#">Feedmail</a>
+          </li>
+        </ul>
+        <form class="form-inline mt-2 mt-md-0">
+          <button type="button" class="btn btn-primary mr-3" id="save_btn" onclick="saveChanges()">Save</button>
+          <button type="button" class="btn btn-secondary mr-3" id="preview_btn" onclick="getPreview()">Preview</button>
+          <button type="button" class="btn btn-danger" onclick="sendMail()" id="send_btn">Send</button>
+        </form>
       </div>
-    </div>
-  </nav>
-  <!--Koniec paska menu u góry strony-->
-
-  <br>
-
-  <!--Początek lewej strony-->
-  <div class="row">
-    <div class="col-md-6">
-      <h6>Email address</h6>
-
-      <div class="card card-body">
-              <div class="col-md-12 col-12">
-                <!-- Email -->
-
-                      <div class="form-group">
-                          <input type="email" class="form-control" id="e-mail" name="email" placeholder="name@example.com">
-                      </div>
-
-              </div>
-      </div>
-
-        <hr>
-
-      <div class="card card-body">
-          <div class="col-md-12 col-10" id="iframe">
-            <table class="table table-sm">
-            <!--Miejsce na wrzut RSS       TZW. IFRAME-->
-              <tr>
-                <iframe id="encoder_iframe" height="700" width="100" src="">
-                </iframe>
-              <br>
-              </tr>
-            </table>
+    </nav>
+  </header>
+  <main class="container-fluid" role="main">
+    <form>
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label for="input_email">Email address</label>
+            <input type="email" class="form-control" id="input_email" aria-describedby="email_help", placeholder="name@example.com">
+            <small id="email_help" class="form-text text-muted"></small>
           </div>
+        </div>
+        <div class="col">
+          <label for="input_email">RSS URL&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</label>
+          <div class="input-group">
+            <input type="text" id="input_rss" class="form-control" placeholder="https://example.site/rss.xml" aria-label="rss_url" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" type="button" id="add_rss_btn" onclick="addRssFromInput()">Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="row">
+      <div class="col">
+        <div class="embed-responsive embed-responsive-16by9 border rounded-lg">
+          <iframe id="iframe_mail" class="embed-responsive-item" src="about:blank"></iframe>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card" style="width: 100%;">
+          <div class="card-header">Rss</div>
+          <ul class="list-group list-group-flush" id="list_rss">
+          </ul>
+        </div>
       </div>
     </div>
-  <!--Koniec lewej strony-->
-
-
-
-  <!--Początek prawej strony-->
-    <div class="col-md-6">
-      <h6>Rss url</h6>
-          <!--Początek RSS URL-->
-          <div class="card card-body">
-              <div class="col-md-12 col-6">
-                      <div class="form-group">
-                          <input type="url" name="rss" id="url"
-                              placeholder="https://example.site/rss.xml"
-                              pattern="https://.*" size="80"
-                              required
-                          >
-                          <button type="button" id="btn" id="add_rss_btn" onclick="addRssFromInput()"> Add </button>
-                          <button type="button" id="btn2"> Clear </button>
-                      </div>
-              </div>
-          </div>
-          <!--Koniec RSS url-->
-      <hr>
-          <!--Początek sekcji RSS-->
-          <section class="container">
-              <div class="card text-white bg-dark mb-3" style="max-width: 55rem;">
-                  <div class="card-body">
-                      <h5 class="card-title"></h5>
-                      <p class="card-text">RSS</p>
-                      <ul class="list-group list-group-flush" id="list_rss"></ul>
-                      <!--<div id="lsOutput" ></div>
-                      <div id="bodycontent" name="bodycontent"></div>-->
-                  </div>
-              </div>
-
-          </section>
-          <!--Koniec sekcji RSS-->
+  </main>
+  <footer class="footer mt-5" style="background-color: #3e4551;">
+    <div class="container">
+      <div class="d-flex justify-content-center py-5">
+        <i class="fa fa-facebook-square fa-lg white-text pr-5 fa-3x" style="color: white;"> </i>
+        <i class="fa fa-twitter-square fa-lg white-text pr-5 fa-3x" style="color: white;"> </i>
+        <i class="fa fa-linkedin-square fa-lg white-text pr-5 fa-3x" style="color: white;"> </i>
+      </div>
     </div>
-
-
-  </div>
-  <script src= "/javascript/events.js" >
-  </script>
+    <div class="footer-copyright text-center py-3 bg-light">© 2020 Copyright:
+      <a href="https://finibit.com/">Finibit</a>
+    </div>
+  </footer>
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <script src=https://code.jquery.com/jquery-3.3.1.min.js></script>
+  <script src="js/script.js"></script>
 </body>
 </html>

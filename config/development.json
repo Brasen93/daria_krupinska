@@ -7,10 +7,6 @@
             "useUnifiedTopology": true
         }
     },
-    "logger": {
-        "level": "debug",
-        "filename": "./backend.log"
-    },
     "mailgun": {
       "domain": "",
       "apiKey": ""
