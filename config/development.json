@@ -1,16 +1,20 @@
 {
-    "port": "8000",
-
+  "feedmail": {
     "db": {
-        "url":"mongodb://127.0.0.1:27017",
-        "name":"node",
-        "collection": "feeds",
-        "Options":{
-            "undefinedTopology": true
+        "url": "mongodb://localhost:27017",
+        "name": "dev",
+        "options": {
+            "useUnifiedTopology": true
         }
     },
-    "mailGun": {
-        "api_key": "4b1aa784-f5ea229f",
-        "domain": "sandboxd8bd75e5a7d94145b6e5d58a259f9142.mailgun.org"
-        }
-    }
+    "logger": {
+        "level": "debug",
+        "filename": "./backend.log"
+    },
+    "mailgun": {
+      "domain": "",
+      "apiKey": ""
+    },
+    "port": 8080
+  }
+}
