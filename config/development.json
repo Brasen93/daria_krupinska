@@ -1,0 +1,16 @@
+{
+    "port": "8000",
+
+    "db": {
+        "url":"mongodb://127.0.0.1:27017",
+        "name":"node",
+        "collection": "feeds",
+        "Options":{
+            "undefinedTopology": true
+        }
+    },
+    "mailGun": {
+        "api_key": "4b1aa784-f5ea229f",
+        "domain": "sandboxd8bd75e5a7d94145b6e5d58a259f9142.mailgun.org"
+        }
+    }
